@@ -1,6 +1,4 @@
 from pyudev import Context, Monitor
-
-#import pyudev
 import psutil
 import glob
 import hashlib
@@ -9,8 +7,7 @@ import time
 
 
 def hash_file(filename):
-   """"This function returns the SHA-1 hash
-   of the file passed into it"""
+   """"This function returns the SHA-1 hash of the file passed into it"""
 
    # make a hash object
    h = hashlib.sha1()
@@ -28,7 +25,8 @@ def hash_file(filename):
    # return the hex representation of digest
    return h.hexdigest()
 
-virus_hash = '68bb75d24bdb38da03227dc3d90452019f96c5c1'
+# virus hash database
+virus_hash = ['68bb75d24bdb38da03227dc3d90452019f96c5c1']
 context = Context()
 monitor = Monitor.from_netlink(context)
 monitor.filter_by(subsystem='block')
@@ -51,7 +49,7 @@ while(1):
                     print("***list of files:\n")
                     for f in files:
                         print("\t\t"+f)
-                        if(virus_hash == hash_file(f) ):
+                        if( hash_file(f) in virus_hash ):
                             print("\n************** x USB has VIRUS x **************")
                             break;
 
